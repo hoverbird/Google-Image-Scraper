@@ -34,7 +34,20 @@ if __name__ == "__main__":
     image_path = os.path.normpath(os.path.join(os.getcwd(), 'photos'))
 
     #Add new search key into array ["cat","t-shirt","apple","orange","pear","fish"]
-    search_keys = list(set(["car","stars"]))
+    nouns = [
+        "Taylor Swift", 
+        "Harry Styles", 
+        "Calvin Harris", 
+        "Joe Jonas",
+        "Taylor Lautner", 
+        "John Mayer", 
+        "Sophie Turner", 
+        "Gigi Hadid", 
+        "Selena Gomez", 
+        "Katy Perry", 
+        "Ellie Goulding"
+    ]
+    search_keys = list(set(nouns))
 
     #Parameters
     number_of_images = 10                # Desired number of images
