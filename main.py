@@ -10,12 +10,12 @@ import os
 import concurrent.futures
 from GoogleImageScraper import GoogleImageScraper
 from patch import webdriver_executable
-
+import argparse
 
 def worker_thread(search_key):
     image_scraper = GoogleImageScraper(
         webdriver_path, 
-        image_path, 
+        output_dir, 
         search_key, 
         number_of_images, 
         headless, 
@@ -31,28 +31,28 @@ def worker_thread(search_key):
 if __name__ == "__main__":
     #Define file path
     webdriver_path = os.path.normpath(os.path.join(os.getcwd(), 'webdriver', webdriver_executable()))
-    image_path = os.path.normpath(os.path.join(os.getcwd(), 'photos'))
+    # image_path = args.get("outputDir", os.path.normpath(os.path.join(os.getcwd(), 'photos')))
 
-    #Add new search key into array ["cat","t-shirt","apple","orange","pear","fish"]
-    nouns = [
-        "Taylor Swift", 
-        "Harry Styles", 
-        "Calvin Harris", 
-        "Joe Jonas",
-        "Taylor Lautner", 
-        "John Mayer", 
-        "Sophie Turner", 
-        "Gigi Hadid", 
-        "Selena Gomez", 
-        "Katy Perry", 
-        "Ellie Goulding"
-    ]
+    # Parse command line arguments
+    parser = argparse.ArgumentParser(description="Google Image Scraper")
+    parser.add_argument("--nouns", type=str, help="Comma-separated list of search terms")
+    parser.add_argument("--outputDir", type=str, help="Output directory for images")
+    args = parser.parse_args()
+
+    # if a nouns argument is passed, split it into a list by comma
+    # 
+    # if not, use the default list of search terms
+    nouns = args.nouns.split(",") if args.nouns else ["cat","t-shirt"]
+
+    # parse output dir argument
+    output_dir = args.outputDir if args.outputDir else os.path.normpath(os.path.join(os.getcwd(), 'photos'))
+
     search_keys = list(set(nouns))
 
     #Parameters
     number_of_images = 10                # Desired number of images
     headless = False                    # True = No Chrome GUI
-    min_resolution = (0, 0)             # Minimum desired image resolution
+    min_resolution = (600, 600)             # Minimum desired image resolution
     max_resolution = (9999, 9999)       # Maximum desired image resolution
     max_missed = 10                     # Max number of failed images before exit
     number_of_workers = 1               # Number of "workers" used

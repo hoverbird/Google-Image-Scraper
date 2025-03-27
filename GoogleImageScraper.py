@@ -57,7 +57,7 @@ class GoogleImageScraper():
                     continue
             except Exception as e:
                 #update chromedriver
-                pattern = '(\d+\.\d+\.\d+\.\d+)'
+                pattern = r'(\d+\.\d+\.\d+\.\d+)'
                 version = list(set(re.findall(pattern, str(e))))[0]
                 is_patched = patch.download_lastest_chromedriver(version)
                 if (not is_patched):
@@ -185,9 +185,15 @@ class GoogleImageScraper():
                                 #join filename and extension
                                 filename = "%s.%s"%(name,image_from_web.format.lower())
                             else:
-                                filename = "%s%s.%s"%(search_string,str(indx),image_from_web.format.lower())
+                                filename = "%s-%s.%s" % (
+                                    re.sub(r'[^a-zA-Z0-9]', '-', self.search_key).lower(),
+                                    str(indx),
+                                    image_from_web.format.lower()
+                                )
 
                             image_path = os.path.join(self.image_path, filename)
+                            # image_path = os.path.join(self.image_path)
+
                             print(
                                 f"[INFO] {self.search_key} \t {indx} \t Image saved at: {image_path}")
                             image_from_web.save(image_path)
