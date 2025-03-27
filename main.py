@@ -42,7 +42,7 @@ if __name__ == "__main__":
     # if a nouns argument is passed, split it into a list by comma
     # 
     # if not, use the default list of search terms
-    nouns = args.nouns.split(",") if args.nouns else ["cat","t-shirt"]
+    nouns = [noun.strip() for noun in args.nouns.split(",")] if args.nouns else ["cat", "t-shirt"]
 
     # parse output dir argument
     output_dir = args.outputDir if args.outputDir else os.path.normpath(os.path.join(os.getcwd(), 'photos'))
